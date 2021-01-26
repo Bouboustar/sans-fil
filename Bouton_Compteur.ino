@@ -1,44 +1,45 @@
-// Bouton Led
-// Bouton poussoir anti rebond
-// Boyer Alexis & Gutirrez Sandro
-// 20.01.21
-// Version 1.2
+// Projet bouton rebond
+// bouton_compteur.cpp
+// Devs: Alexis & Sandro
+// Date: 26/01/2021
+// Version: 1.0
 
-int compteur = 0;     // on initialise le compteur a 0 
-int pin_LED = 13;    // port numérique associé à la LED intégrée
-int pin_button = 2;  // port numérique lié au bouton poussoir
-int pin_reset = 5;   // port du bouton reset
-volatile int state = LOW; // variable d'état de la LED (précédée de volatile !!)
+int compt = 0;
+int flag = 0;
+int pin_LED = 3;   // port numérique associé à la LED intégrée
+int pin_button = 2; // port numérique lié au bouton poussoir
+int pin_button2 = 4; // Port numérique bouton reset
+volatile int state = LOW; // variable d'état de la LED (précédée de volatile)
+
 void setup() {
    pinMode(pin_LED, OUTPUT);    // réglage du port de la LED en mode SORTIE
    // Création de l'interruption
-   attachInterrupt(0, blink, CHANGE);
+   attachInterrupt(0, compteur, RISING);
    Serial.begin(9600);
 }
 void loop() {
    digitalWrite(pin_LED, state); // action sur LED (allumage ou extinction)
    // Suite du programme ... simulé par une instruction d'attente
+   if (compt >= 8 and compt < 12 and flag == 0) {
+      blink();
+      flag = 1;
+    }
+    if (compt >= 12 and flag == 1) {
+      flag = 0;
+      blink();
+    }
+    if (digitalRead(pin_button2) == HIGH) {
+      compt = 0;
+      state = LOW;
+      Serial.println(compt);
+    }
    delay(100);
-   boolean appuiButton = digitalRead(pin_button);
-   boolean appuiButton2 = digitalRead(pin_reset);
-   if (appuiButton == HIGH) {
-      compteur = compteur+1;
-      Serial.println(compteur);
-      delay(150);
-      if (compteur == 8) {
-        digitalWrite(pin_LED, LOW);
-      }
-      if (compteur == 12) {
-        digitalWrite(pin_LED, HIGH);
-      }
-      }
-    if (appuiButton2 == HIGH) { // Reset 
-      compteur = 0;
-      digitalWrite(pin_LED, LOW);
-      Serial.println(compteur);
-      }
-   
 }
 void blink() {
    state = !state; // inversion de la variable d'état de la LED
+}
+
+void compteur() {
+    compt = compt + 1;
+    Serial.println(compt);
 }
