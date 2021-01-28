@@ -1,5 +1,4 @@
 // Projet bouton rebond
-// bouton_compteur.cpp
 // Devs: Alexis & Sandro
 // Date: 26/01/2021
 // Version: 1.0
