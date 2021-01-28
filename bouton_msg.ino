@@ -1,5 +1,4 @@
 // Projet bouton rebond
-// bouton_message.ino
 // Devs: Alexis & Sandro
 // Date: 20/01/2021
 // Version: 1.0
